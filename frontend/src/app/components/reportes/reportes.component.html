@@ -1,0 +1,144 @@
+<form (ngSubmit)="buscarReportesFlexibles()" style="margin-bottom:2em; background:#23272f; padding:1.5em; border-radius:10px;">
+  <h2 style="margin-top:0;">Reporteador flexible</h2>
+  <div style="display:flex; flex-wrap:wrap; gap:1em; align-items:end;">
+    <div>
+      <label>Estado personaje<br>
+        <select [(ngModel)]="filtros.estado" name="estado">
+          <option value="">Seleccionar estado</option>
+          <option *ngFor="let estado of estadosDisponibles" [value]="estado">{{ estado }}</option>
+        </select>
+      </label>
+    </div>
+    <div>
+      <label>Locación personaje<br>
+        <input type="text" [(ngModel)]="filtros.locacion" name="locacion" placeholder="Nombre locación">
+      </label>
+    </div>
+    <div>
+      <label>Nombre Personaje<br>
+        <input type="text" [(ngModel)]="filtros.personaje_nombre" name="personaje_nombre" placeholder="Nombre del personaje">
+      </label>
+    </div>
+    <div>
+      <label>Nombre Episodio<br>
+        <input type="text" [(ngModel)]="filtros.episodio_nombre" name="episodio_nombre" placeholder="Nombre del episodio">
+      </label>
+    </div>
+    <div>
+      <label>Fecha inicio emisión<br>
+        <input type="date" [(ngModel)]="filtros.fecha_inicio" name="fecha_inicio">
+      </label>
+    </div>
+    <div>
+      <label>Fecha fin emisión<br>
+        <input type="date" [(ngModel)]="filtros.fecha_fin" name="fecha_fin">
+      </label>
+    </div>
+    <div>
+      <button type="submit">Buscar</button>
+      <button type="button" (click)="limpiarFiltros()" style="margin-left: 0.5em; background: #e74c3c;">Limpiar</button>
+    </div>
+  </div>
+</form>
+
+<div *ngIf="loadingFlex">Buscando reportes...</div>
+<div *ngIf="!loadingFlex && resultadosFlexibles && (resultadosFlexibles.personajes_por_estado?.length || resultadosFlexibles.personajes_por_locacion?.length || resultadosFlexibles.episodios_de_personaje?.length || resultadosFlexibles.personajes_de_episodio?.length || resultadosFlexibles.episodios_por_fecha?.length)">
+  <h3>Resultados del reporteador flexible</h3>
+  <div *ngIf="resultadosFlexibles.personajes_por_estado?.length">
+    <h4>Personajes por estado</h4>
+    <ul>
+      <li *ngFor="let p of resultadosFlexibles.personajes_por_estado">{{ p.nombre }} ({{ p.estado }})</li>
+    </ul>
+  </div>
+  <div *ngIf="resultadosFlexibles.personajes_por_locacion?.length">
+    <h4>Personajes por locación</h4>
+    <ul>
+      <li *ngFor="let p of resultadosFlexibles.personajes_por_locacion">{{ p.nombre }} ({{ p.estado }})</li>
+    </ul>
+  </div>
+  <div *ngIf="resultadosFlexibles.episodios_de_personaje?.length">
+    <h4>Episodios en los que aparece el personaje</h4>
+    <ul>
+      <li *ngFor="let e of resultadosFlexibles.episodios_de_personaje">{{ e.nombre }} ({{ e.codigo }})</li>
+    </ul>
+  </div>
+  <div *ngIf="resultadosFlexibles.personajes_de_episodio?.length">
+    <h4>Personajes que aparecen en el episodio</h4>
+    <ul>
+      <li *ngFor="let p of resultadosFlexibles.personajes_de_episodio">{{ p.nombre }} ({{ p.estado }})</li>
+    </ul>
+  </div>
+  <div *ngIf="resultadosFlexibles.episodios_por_fecha?.length">
+    <h4>Episodios en el rango de fechas</h4>
+    <ul>
+      <li *ngFor="let e of resultadosFlexibles.episodios_por_fecha">{{ e.nombre }} ({{ e.fecha_emision }})</li>
+    </ul>
+  </div>
+</div>
+
+<div *ngIf="loading">Cargando reportes...</div>
+<div *ngIf="!loading">
+  <h2>Personajes en orden ascendente por fecha de emisión del primer episodio</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Personaje</th>
+        <th>Primer Episodio</th>
+        <th>Fecha de Emisión</th>
+        <th>Antigüedad (Días)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of reportePersonajesPorFecha">
+        <td>{{ r.personaje }}</td>
+        <td>{{ r.primer_episodio }}</td>
+        <td>{{ r.fecha_emision }}</td>
+        <td>{{ r.antiguedad_dias }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Cantidad de personajes por episodio</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Episodio</th>
+        <th>Código</th>
+        <th>Cant. Personajes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of reportePersonajesPorEpisodio; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ r.episodio }}</td>
+        <td>{{ r.codigo }}</td>
+        <td>{{ r.cant_personajes }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Locaciones y personajes de cada una</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Locación</th>
+        <th>Tipo</th>
+        <th>Dimensión</th>
+        <th>Personajes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of reporteLocacionesConPersonajes">
+        <td>{{ r.locacion }}</td>
+        <td>{{ r.tipo }}</td>
+        <td>{{ r.dimension }}</td>
+        <td>
+          <ul style="margin:0; padding-left: 1em;">
+            <li *ngFor="let p of r.personajes">{{ p }}</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

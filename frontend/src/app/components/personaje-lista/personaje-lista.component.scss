@@ -1,0 +1,27 @@
+.personaje-card {
+  display: inline-block;
+  background: #23272f;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  margin: 1em;
+  padding: 1em;
+  text-align: center;
+  width: 180px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.personaje-card:hover {
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 6px 16px rgba(0,181,204,0.25);
+}
+.personaje-card img {
+  border-radius: 50%;
+  margin-bottom: 0.5em;
+  border: 3px solid #97ce4c;
+}
+.personaje-card a {
+  display: inline-block;
+  margin-top: 0.5em;
+  font-size: 0.95em;
+  color: #00b5cc;
+  font-weight: bold;
+}

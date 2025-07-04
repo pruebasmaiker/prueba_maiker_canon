@@ -1,0 +1,25 @@
+<div *ngIf="loading">Cargando...</div>
+<div *ngIf="!loading && personaje">
+  <h2>{{ personaje.name }}</h2>
+  <img [src]="personaje.image" [alt]="personaje.name" width="150" />
+  <p><strong>Estado:</strong> {{ personaje.status }}</p>
+  <p><strong>Especie:</strong> {{ personaje.species }}</p>
+  <p><strong>Tipo:</strong> {{ personaje.type || 'N/A' }}</p>
+  <p><strong>Género:</strong> {{ personaje.gender }}</p>
+
+  <h3>Episodios</h3>
+  <ul>
+    <li *ngFor="let ep of personaje.episode">{{ ep }}</li>
+  </ul>
+
+  <h3>Locaciones</h3>
+  <ul>
+    <li *ngIf="personaje.origin">Origen: {{ personaje.origin.name }}</li>
+    <li *ngIf="personaje.location">Ubicación: {{ personaje.location.name }}</li>
+  </ul>
+
+  <button (click)="importar()" [disabled]="importando">Importar</button>
+  <div *ngIf="mensajeImportacion">{{ mensajeImportacion }}</div>
+
+  <a routerLink="/">Volver a la lista</a>
+</div>
