@@ -17,6 +17,6 @@ storage/framework/sessions/*
 storage/framework/views/*
 tests
 vendor
-composer.lock
+
 package-lock.json
 yarn.lock 
