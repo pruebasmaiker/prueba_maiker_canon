@@ -1,0 +1,26 @@
+h2 {
+  margin-top: 2em;
+  margin-bottom: 1em;
+  color: #97ce4c;
+  text-align: left;
+}
+table {
+  margin-bottom: 2.5em;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+}
+th, td {
+  font-size: 1em;
+}
+th {
+  background: #00b5cc;
+  color: #fff;
+}
+tr:hover {
+  background: #2e3c43;
+}
+ul {
+  margin: 0;
+  padding-left: 1.2em;
+}

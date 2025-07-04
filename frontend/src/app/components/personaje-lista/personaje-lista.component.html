@@ -1,0 +1,11 @@
+<app-busqueda (search)="buscar($event)"></app-busqueda>
+
+<div *ngIf="loading">Cargando...</div>
+<div *ngIf="!loading && personajes.length === 0">No hay resultados.</div>
+<div *ngIf="!loading">
+  <div *ngFor="let p of personajes" class="personaje-card">
+    <img [src]="p.image" [alt]="p.name" width="100" />
+    <div>{{ p.name }}</div>
+    <a [routerLink]="['/personaje', p.id]">Ver detalle</a>
+  </div>
+</div>
